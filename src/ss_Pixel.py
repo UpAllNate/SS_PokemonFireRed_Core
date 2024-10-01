@@ -1,12 +1,10 @@
 from src.ss_logging.spoken_screen_logger import logger
 from src.registration import SafeGlobals
 from src.ss_ColorClasses import PixelColor
-
 import numpy
 
 @SafeGlobals.register
 def get_pixel_row_absolute(im : numpy.ndarray, row : int, limitPixel_Low : int = None, limitPixel_High : int = None) -> numpy.ndarray:
-    row_count = len(im)
     column_count = len(im[0])
 
     if limitPixel_Low is None: limitPixel_Low = 0
@@ -15,9 +13,8 @@ def get_pixel_row_absolute(im : numpy.ndarray, row : int, limitPixel_Low : int =
     return im[row][limitPixel_Low:limitPixel_High]
 
 @SafeGlobals.register
-def get_pixel_column_absolute(im : list[list[tuple[int,int,int,int]]], column : int, limitPixel_Low : int = None, limitPixel_High : int = None) -> list[list[int,int,int]]:
+def get_pixel_column_absolute(im : numpy.ndarray, column : int, limitPixel_Low : int = None, limitPixel_High : int = None) -> numpy.ndarray:
     row_count = len(im)
-    column_count = len(im[0])
 
     if limitPixel_Low is None: limitPixel_Low = 0
     if limitPixel_High is None: limitPixel_High = row_count + 1
@@ -77,24 +74,22 @@ def get_pixel_column_percent(
 # Returns detection result as bool and ColorScanInstance
 # of single instance or equal list length
 @SafeGlobals.register
-def pixel_sequence_scan(pixels : list[tuple[int,int,int]],\
-     colors : list[PixelColor] | PixelColor)\
-            -> tuple[bool, list[PixelColor] | PixelColor]:
+def pixel_sequence_scan(
+    pixels : list[tuple[int,int,int]], colors : list[PixelColor]) -> tuple[bool, list[PixelColor]]:
 
     ####################################################
     #               Error Handling
     ####################################################
-    if isinstance(colors,PixelColor):
-        _ = []
-        _.append(colors)
-        colors = _
-        singleColorInstance = True
-    else:
-        singleColorInstance = False
+
+    if isinstance(colors, PixelColor):
+        colors = [colors]
 
     if not isinstance(colors[0],PixelColor):
-        # logSS.critical(f"pixelSequenceScan received colors input of invalid type: {colors[0].__class__.__name__}")
-        raise TypeError(f"pixelSequenceScan received colors input of invalid type: {colors[0].__class__.__name__}")
+        err = f"pixelSequenceScan received colors input of invalid type: {colors[0].__class__.__name__}"
+        logger.op.critical(err)
+        raise TypeError(err)
+
+    colors: list[PixelColor]
 
     ####################################################
     #               Initialize
@@ -102,7 +97,8 @@ def pixel_sequence_scan(pixels : list[tuple[int,int,int]],\
     cIndex = 0
 
     # Initialize all pixel return values
-    colors = clearColorScanPixels(colors)
+    for c in colors:
+        c.tolerance
 
     ####################################################
     #               Loop through pixels

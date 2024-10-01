@@ -10,7 +10,8 @@ from src.ss_logging.project_logger import (
     CRITICAL,
     color_text,
     LogColor,
-    LogAttr
+    LogAttr,
+    StandardColoring as sc
 )
 
 from pathlib import Path
@@ -26,7 +27,12 @@ logs_dir.mkdir(parents=True, exist_ok=True)
 class logger:
 
     op = ProjectLogger(
+        stream_log_enable= True,
         file_log_enable= True,
+
+        stream_logger_name= "ss_op_s",
+        stream_log_level= ERROR,
+
         file_logger_name= "ss_op_f",
         file_log_level= LOW_DEBUG,
         file_path= logs_dir / "log_operations.log",
@@ -41,7 +47,12 @@ class logger:
     )
 
 if __name__ == "__main__":
-    logger.ui.info(message= f"This is a {color_text('test', color= LogColor.GREEN, attrs= [LogAttr.BOLD])}")
-    logger.ui.error(message= f"Something is wrong now!!")
-    logger.op.debug("Test")
 
+    dino_color = lambda text : color_text(text, color= LogColor.LIGHT_MAGENTA, attrs= LogAttr.UNDERLINE)
+
+    logger.ui.info(message= f"This is a {color_text('test', color= LogColor.GREEN, attrs= [LogAttr.BOLD])}")
+    logger.ui.info(sc.success("Success"))
+    logger.ui.error(message= f"Something is wrong now!!")
+    logger.ui.warning(message= f"Uh oh! {sc.num(4)} dinosaurs got out! Catch the {dino_color('stegosauraus')}!")
+    logger.op.debug("Test")
+    logger.op.critical(f"Big {sc.failure('PROBLEM')}")

@@ -12,13 +12,12 @@ class PixelColor:
     def __init__(
         self,
         color : tuple[int,int,int],
-        tolerance : int,
         requirement : bool
     ) -> None:
 
         self.color = color
         self.requirement = requirement
-        self.tolerance = tolerance
+        self.tolerance = 0
         self.startPixel = 0
         self.endPixel = 0
 

@@ -227,23 +227,23 @@ class StandardColoring:
     
     @staticmethod
     def num(text : str) -> str:
-        return color_text(text, color= LogColor.LIGHT_BLUE, on_color= None, attrs= [])
+        return color_text(str(text), color= LogColor.LIGHT_BLUE, on_color= None, attrs= [])
     
     @staticmethod
     def object(text : str) -> str:
-        return color_text(text, color= LogColor.GREEN, on_color= None, attrs= [])
+        return color_text(str(text), color= LogColor.GREEN, on_color= None, attrs= [])
     
     @staticmethod
     def state(text : str) -> str:
-        return color_text(text, color= LogColor.MAGENTA, on_color= None, attrs= [])
+        return color_text(str(text), color= LogColor.MAGENTA, on_color= None, attrs= [])
     
     @staticmethod
     def success(text : str) -> str:
-        return color_text(text, color= LogColor.BLACK, on_color= LogColor.GREEN, attrs= [])
+        return color_text(str(text), color= LogColor.BLACK, on_color= LogColor.GREEN, attrs= [LogAttr.BOLD])
     
     @staticmethod
     def failure(text : str) -> str:
-        return color_text(text, color= LogColor.WHITE, on_color= LogColor.RED, attrs= [LogAttr.BOLD])
+        return color_text(str(text), color= LogColor.WHITE, on_color= LogColor.RED, attrs= [LogAttr.BOLD])
 
 if __name__ == "__main__":
 
