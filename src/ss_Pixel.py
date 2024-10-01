@@ -1,17 +1,10 @@
-try:
-    from common.ss_Logging import logSS
-except:
-    from ss_Logging import logSS
-
-try:
-    from common.ss_ColorClasses import Color, ColorRequirement
-except:
-    from ss_ColorClasses import Color, ColorRequirement
+from src.ss_logging.spoken_screen_logger import logger
+from src.registration import SafeGlobals
+from src.ss_ColorClasses import PixelColor
 
 import numpy
-from common.ss_namespace_methods import NamespaceMethods
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def get_pixel_row_absolute(im : numpy.ndarray, row : int, limitPixel_Low : int = None, limitPixel_High : int = None) -> numpy.ndarray:
     row_count = len(im)
     column_count = len(im[0])
@@ -21,7 +14,7 @@ def get_pixel_row_absolute(im : numpy.ndarray, row : int, limitPixel_Low : int =
 
     return im[row][limitPixel_Low:limitPixel_High]
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def get_pixel_column_absolute(im : list[list[tuple[int,int,int,int]]], column : int, limitPixel_Low : int = None, limitPixel_High : int = None) -> list[list[int,int,int]]:
     row_count = len(im)
     column_count = len(im[0])
@@ -31,7 +24,7 @@ def get_pixel_column_absolute(im : list[list[tuple[int,int,int,int]]], column : 
 
     return [row[column][:3] for row in im[limitPixel_Low:limitPixel_High]]
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def get_percent_of_range(low, high, percent : float):
     len = high - low
     if percent <= 0.0:
@@ -41,7 +34,7 @@ def get_percent_of_range(low, high, percent : float):
     else:
         return percent * len + low
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def get_pixel_row_percent(
     im : list[list[tuple[int,int,int,int]]],
     percent : float,
@@ -61,7 +54,7 @@ def get_pixel_row_percent(
 
     return im[row][limitPixel_Low:limitPixel_High]
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def get_pixel_column_percent(
     im : list[list[tuple[int,int,int,int]]],
     percent : float,
@@ -83,15 +76,15 @@ def get_pixel_column_percent(
 
 # Returns detection result as bool and ColorScanInstance
 # of single instance or equal list length
-@NamespaceMethods.register
+@SafeGlobals.register
 def pixel_sequence_scan(pixels : list[tuple[int,int,int]],\
-     colors : list[Color] | Color)\
-            -> tuple[bool, list[Color] | Color]:
+     colors : list[PixelColor] | PixelColor)\
+            -> tuple[bool, list[PixelColor] | PixelColor]:
 
     ####################################################
     #               Error Handling
     ####################################################
-    if isinstance(colors,Color):
+    if isinstance(colors,PixelColor):
         _ = []
         _.append(colors)
         colors = _
@@ -99,7 +92,7 @@ def pixel_sequence_scan(pixels : list[tuple[int,int,int]],\
     else:
         singleColorInstance = False
 
-    if not isinstance(colors[0],Color):
+    if not isinstance(colors[0],PixelColor):
         # logSS.critical(f"pixelSequenceScan received colors input of invalid type: {colors[0].__class__.__name__}")
         raise TypeError(f"pixelSequenceScan received colors input of invalid type: {colors[0].__class__.__name__}")
 

@@ -1,14 +1,14 @@
 from time import perf_counter
 from imagehash import ImageHash
 from numpy import ndarray
-from common.ss_namespace_methods import NamespaceMethods
+from src.registration import SafeGlobals
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def dhash_nd_array(arr : ndarray) -> ImageHash:
     diff = arr[:, 1:] > arr[:, :-1]
     return ImageHash(diff)
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def compute_hash_flatness(
     hash : ImageHash,
     prevHash : ImageHash,

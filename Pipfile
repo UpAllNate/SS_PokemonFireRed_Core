@@ -4,15 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "*"
-imagehash = "*"
-six = "*"
+termcolor = "*"
+colorama = "*"
 numpy = "*"
-tomli-w = "*"
-ipykernel = "*"
+pillow = "*"
+restrictedpython = "*"
+imagehash = "*"
+audioplayer = "*"
 
 [dev-packages]
-ipykernel = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.11"

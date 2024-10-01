@@ -4,19 +4,19 @@ from PIL.Image import Image as ImageClass
 import numpy
 from numpy import ndarray
 from typing import Union
-from common.ss_namespace_methods import NamespaceMethods
+from src.registration import SafeGlobals
 
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def screenshot() -> ImageClass:
     return ImageGrab.grab()
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def make_np_array(im : ImageClass) -> ndarray:
     return numpy.array(im)
 
-@NamespaceMethods.register
-def flexCropImage(im : Image, left, top, right, bottom, horizontalCount : int = None, verticalCount : int = None):
+@SafeGlobals.register
+def flexCropImage(im : ImageClass, left, top, right, bottom, horizontalCount : int = None, verticalCount : int = None):
 
     if horizontalCount is None: horizontalCount = 1
     if verticalCount is None: verticalCount = 1
@@ -35,7 +35,7 @@ def flexCropImage(im : Image, left, top, right, bottom, horizontalCount : int = 
                 returnImageList.append(im.crop((pieceLeft, pieceTop, pieceLeft + returnWidth, pieceTop + returnHeight)))
         return returnImageList
 
-@NamespaceMethods.register
+@SafeGlobals.register
 def mergeImages_Vertical(*images : ImageClass | list[ImageClass]) -> Image:
 
     # compile list of images
@@ -67,8 +67,7 @@ def mergeImages_Vertical(*images : ImageClass | list[ImageClass]) -> Image:
 
     return returnImage
 
-@NamespaceMethods.register
-def saveImage(im : Image, fileNombre : str) -> bool:
+def saveImage(im : ImageClass, fileNombre : str) -> bool:
     try:
         im.save(fileNombre)
     except:
